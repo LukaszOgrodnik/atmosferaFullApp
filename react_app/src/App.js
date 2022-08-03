@@ -1,10 +1,6 @@
 import { useState} from "react";
 import Outputs from "./components/Outputs";
 
-
-
-
-
 function App() {
   const [outputs , setOutputs] = useState([
   {
@@ -52,7 +48,17 @@ function App() {
   ]);
 
   const [text, setText] = useState("");
-  const [submit, setSubmit] = useState("");
+
+
+  const calculateProps = (height) => {
+    setOutputs(outputs.map((output)=>{
+      output.value = height
+      return output
+    }))
+    console.log(height)
+  }
+
+
   return (
 
   <div className="flex flex-col bg-center">
@@ -61,7 +67,7 @@ function App() {
       </label>
 
   <div class="form-control">
-    <div className="input-group m-2 ">
+    <div className="input-group m-2">
       <input 
         type="text" 
         value={text} 
@@ -75,7 +81,7 @@ function App() {
         <option> ft </option>
       </select>
 
-      <button className="btn"> Submit</button>
+      <button className="btn" onClick = {() => calculateProps(text) }> Submit</button>
     </div>
   </div>
       <Outputs outputs={outputs}/>

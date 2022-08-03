@@ -4,7 +4,7 @@ return (
     <label className="label border w-40 ">{output.type}:</label>
     <label className="label border border-spacing-10 w-40"> {output.value} </label>
     <select className="select select-bordered w-25">
-      {output.units.map((unit) => (<option> {unit} </option>))}
+      {output.units.map((unit) => (<option key={unit.id}> {unit} </option>))}
     </select>
   </div> 
   )

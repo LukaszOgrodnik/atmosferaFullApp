@@ -4,7 +4,7 @@ const Outputs = ({outputs}) => {
   return (
     <>
     {outputs.map( (output) => (
-    <OutputValue 
+    <OutputValue key = {output.id} 
         output = {output} />))}
     </>
   )
