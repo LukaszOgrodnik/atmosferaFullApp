@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import Outputs from "./components/Outputs";
 
 function App() {
@@ -48,9 +48,15 @@ function App() {
   ]);
 
   const [text, setText] = useState("");
+  const [time, setTime] = useState(0);
 
+  useEffect(()=>{
+    fetch('/').then(res => res.json()).then(res => {
+      console.log(res).catch(error=> console.log(error))
+    })
+  },[])
 
-  const calculateProps = (height) => {
+  const calculateProps = async (height) => {
     setOutputs(outputs.map((output)=>{
       output.value = height
       return output
@@ -66,7 +72,7 @@ function App() {
         <span className="label-text font-size:4rem">Enter the height for which you want to calculate athomsphere parameters: </span>
       </label>
 
-  <div class="form-control">
+  <div className="form-control">
     <div className="input-group m-2">
       <input 
         type="text" 
@@ -83,9 +89,11 @@ function App() {
 
       <button className="btn" onClick = {() => calculateProps(text) }> Submit</button>
     </div>
-  </div>
-      <Outputs outputs={outputs}/>
+
     </div>
+      <Outputs outputs={outputs}/>
+      <p> current time  {time}</p>
+  </div>
   );
 }
 
