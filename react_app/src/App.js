@@ -1,99 +1,85 @@
-import { useState, useEffect} from "react";
+import { useState } from "react";
+import axios from "axios";
 import Outputs from "./components/Outputs";
+import InputHeightField from "./components/InputHeightField";
+import Header from "./components/Header";
 
 function App() {
-  const [outputs , setOutputs] = useState([
-  {
-    id:1,
-    type:"Pressure",
-    value: 0,
-    units: [ "Pa", "hPa","MPa", "psi"] , 
-  },
-  {
-    id:2,
-    type:"Temperature",
-    value: 0,
-    units: ["K", "C", "F"] , 
-  },
-  {
-    id:3,
-    type:"Density",
-    value: 0,
-    units: ["kg/m^3", "g/cm^3", "sl/ft^3"] , 
-  },
-  {
-    id:4,
-    type:"Sound speed",
-    value: 0,
-    units: ["m/s", "km/h", "mph","kts"] , 
-  },
-  {
-    id:5,
-    type:"Mach Number",
-    value: 0,
-    units: ["Ma"] , 
-  },
-  {
-    id:6,
-    type:"Kinematic Viscosity",
-    value: 0,
-    units: ["m^2/s", "cS", "cSt"] , 
-  },
-  {
-    id:7,
-    type:"Dynamic Viscosity",
-    value: 0,
-    units: ["m/s", "cgs"] , 
-  },
+  const [outputs, setOutputs] = useState([
+    {
+      id: 1,
+      type: "pressure",
+      value: 0,
+      units: ["Pa", "hPa", "MPa", "psi"],
+    },
+    {
+      id: 2,
+      type: "temperature",
+      value: 0,
+      units: ["K", "C", "F"],
+    },
+    {
+      id: 3,
+      type: "density",
+      value: 0,
+      units: ["kg/m^3", "g/cm^3", "sl/ft^3"],
+    },
+    {
+      id: 4,
+      type: "sound_speed",
+      value: 0,
+      units: ["m/s", "km/h", "mph", "kts"],
+    },
+    {
+      id: 5,
+      type: "kinematic_viscosity",
+      value: 0,
+      units: ["m^2/s", "cS", "cSt"],
+    },
+    {
+      id: 6,
+      type: "dynamic_viscosity",
+      value: 0,
+      units: ["m/s", "cgs"],
+    },
   ]);
 
-  const [text, setText] = useState("");
-  const [time, setTime] = useState(0);
-
-  useEffect(()=>{
-    fetch('/').then(res => res.json()).then(res => {
-      console.log(res).catch(error=> console.log(error))
-    })
-  },[])
+  const [inputHeight, setInputHeight] = useState("");
 
   const calculateProps = async (height) => {
-    setOutputs(outputs.map((output)=>{
-      output.value = height
-      return output
-    }))
-    console.log(height)
-  }
+    axios
+      .post("http://127.0.0.1:8000/calc", { height })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
+    fetch("http://127.0.0.1:8000/sent")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setOutputs(
+          outputs.map((output) => {
+            output.value = res[output.type];
+            return output;
+          })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    console.log(height);
+  };
 
   return (
-
-  <div className="flex flex-col bg-center">
-      <label className="label">
-        <span className="label-text font-size:4rem">Enter the height for which you want to calculate athomsphere parameters: </span>
-      </label>
-
-  <div className="form-control">
-    <div className="input-group m-2">
-      <input 
-        type="text" 
-        value={text} 
-        placeholder="Input height" 
-        onChange={(e)=> setText (e.target.value)}
-        className="input input-bordered w-full max-w-xs" />
-
-      <select className="select select-bordered">
-        <option >m</option>
-        <option> km </option>
-        <option> ft </option>
-      </select>
-
-      <button className="btn" onClick = {() => calculateProps(text) }> Submit</button>
+    <div className="flex flex-col bg-center">
+      <Header/>
+      <InputHeightField inputHeight={inputHeight} setInputHeight ={setInputHeight} onSubmit = {calculateProps} />
+      <Outputs outputs={outputs} />
     </div>
-
-    </div>
-      <Outputs outputs={outputs}/>
-      <p> current time  {time}</p>
-  </div>
   );
 }
 

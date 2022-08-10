@@ -19,9 +19,9 @@
   },
   "scripts": {
     "start:backend": "cd backend & venv/Scrits/flask run --no debugger",
-    "start:frontend": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripnpm ts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,6 +44,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.1.6"
-  },
-  "proxy":"http//localhost/5000"
+  }
 }
