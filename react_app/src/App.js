@@ -9,43 +9,79 @@ function App() {
     {
       id: 1,
       type: "pressure",
+      label: "Pressure",
       value: 0,
-      units: ["Pa", "hPa", "MPa", "psi"],
+      units: [
+        { value: "Pa", label: "Pa" },
+        { value: "hPa", label: "hPa" },
+        { value: "MPa", label: "MPa" },
+        { value: "psi", label: "psi" },
+      ],
     },
     {
       id: 2,
       type: "temperature",
+      label: "Temperature",
       value: 0,
-      units: ["K", "C", "F"],
+      units: [
+        { value: "K", label: "K" },
+        { value: "C", label: "C" },
+        { value: "F", label: "F" },
+      ],
     },
     {
       id: 3,
       type: "density",
+      label: "Density",
       value: 0,
-      units: ["kg/m^3", "g/cm^3", "sl/ft^3"],
+      units: [
+        { value: "kg/m^3", label: "kg/m^3" },
+        { value: "g/cm^3", label: "g/cm^3" },
+        { value: "sl/ft^3", label: "sl/ft^3" },
+      ],
     },
     {
       id: 4,
       type: "sound_speed",
+      label: "Sound speed",
       value: 0,
-      units: ["m/s", "km/h", "mph", "kts"],
+      units: [
+        { value: "m/s", label: "m/s" },
+        { value: "km/h", label: "km/h" },
+        { value: "mph", label: "mph" },
+        { value: "kts", label: "kts" },
+      ],
     },
     {
       id: 5,
       type: "kinematic_viscosity",
+      label: "Kinematic viscosity",
       value: 0,
-      units: ["m^2/s", "cS", "cSt"],
+      units: [
+        { value: "m^2/s", label: "m^2/s" },
+        { value: "cS", label: "cS" },
+        { value: "cSt", label: "cSt" },
+      ],
     },
     {
       id: 6,
       type: "dynamic_viscosity",
+      label: "Dynamic viscosity",
       value: 0,
-      units: ["m/s", "cgs"],
+      units: [
+        { value: "m/s", label: "m/s" },
+        { value: "cgs", label: "cgs" },
+      ],
     },
   ]);
 
-  const [inputHeight, setInputHeight] = useState("");
+  //Prepare list/object of used units and send it to backend or calculate Props (to decide).
+  function sendUnit(unit) {
+    console.log("send unit ", unit);
 
+  }
+
+  //Sends data to main.py and then fetches the stadard athmosphere props values from backend
   const calculateProps = async (height) => {
     axios
       .post("http://127.0.0.1:8000/calc", { height })
@@ -76,9 +112,9 @@ function App() {
 
   return (
     <div className="flex flex-col bg-center">
-      <Header/>
-      <InputHeightField inputHeight={inputHeight} setInputHeight ={setInputHeight} onSubmit = {calculateProps} />
-      <Outputs outputs={outputs} />
+      <Header />
+      <InputHeightField onSubmit={calculateProps} sendUnit={sendUnit} />
+      <Outputs outputs={outputs} sendUnit={sendUnit} />
     </div>
   );
 }

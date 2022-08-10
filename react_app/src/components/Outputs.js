@@ -1,11 +1,11 @@
 import OutputValue from "./OutputValue"
 
-const Outputs = ({outputs}) => {
+const Outputs = ({outputs , sendUnit}) => {
   return (
     <>
     {outputs.map( (output) => (
     <OutputValue key = {output.id} 
-        output = {output} />))}
+        output = {output} sendUnit={sendUnit} />))}
     </>
   )
 }
