@@ -4,4 +4,4 @@ The project is my pre-engineer thesis for my Aerospace Engineering Studies. The 
 
 This project is my first full stack application:
  - Frontend is created in JS react
- - Backend is created in Python Flask
+ - Backend is created in Python Fast API
