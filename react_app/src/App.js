@@ -15,6 +15,8 @@ function App() {
         { value: "Pa", label: "Pa" },
         { value: "hPa", label: "hPa" },
         { value: "MPa", label: "MPa" },
+        { value: "atm", label: "atm" },
+        { value: "bar", label: "bar" },
         { value: "psi", label: "psi" },
       ],
     },
@@ -27,6 +29,7 @@ function App() {
         { value: "K", label: "K" },
         { value: "C", label: "C" },
         { value: "F", label: "F" },
+        { value: "R", label: "R" },
       ],
     },
     {
@@ -38,6 +41,7 @@ function App() {
         { value: "kg/m^3", label: "kg/m^3" },
         { value: "g/cm^3", label: "g/cm^3" },
         { value: "sl/ft^3", label: "sl/ft^3" },
+        { value: "lb/ft^3", label: "lb/ft^3" },
       ],
     },
     {
@@ -59,8 +63,8 @@ function App() {
       value: 0,
       units: [
         { value: "m^2/s", label: "m^2/s" },
-        { value: "cS", label: "cS" },
-        { value: "cSt", label: "cSt" },
+        { value: "S", label: "S" },
+        { value: "ft^2/s", label: "ft^2/s" },
       ],
     },
     {
@@ -69,8 +73,8 @@ function App() {
       label: "Dynamic viscosity",
       value: 0,
       units: [
-        { value: "m/s", label: "m/s" },
-        { value: "cgs", label: "cgs" },
+        { value: "Pa*s", label: "Pa*s" },
+        { value: "P", label: "P" },
       ],
     },
   ]);
