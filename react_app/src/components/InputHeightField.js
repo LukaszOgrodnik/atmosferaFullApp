@@ -23,7 +23,7 @@ const InputHeightField = ({ onSubmit, sendUnit}) => {
           onChange={(e) => setInputHeight(e.target.value)}
           className="input input-bordered w-full max-w-xs"
         />
-        <SelectUnit options={heightUnits} sendUnit = {sendUnit} /> 
+        <SelectUnit unitType="height" options={heightUnits} sendUnit = {sendUnit} /> 
 
         <button className="btn" onClick={() => onSubmit(inputHeight)}>
           {" "}

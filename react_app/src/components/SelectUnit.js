@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SelectUnit = ({ options, sendUnit }) => {
+const SelectUnit = ({unitType, options, sendUnit }) => {
   const [selectedOption, setSelectedOption] = useState(options[0].value);
   return (
     <div>
@@ -15,7 +15,7 @@ const SelectUnit = ({ options, sendUnit }) => {
           <option
             key={o.value}
             value={o.value}
-            onClick={sendUnit(selectedOption)}
+            onClick={()=>sendUnit(unitType, selectedOption)}
           >
             {o.label}
           </option>

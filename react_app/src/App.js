@@ -79,16 +79,39 @@ function App() {
     },
   ]);
 
-  //Prepare list/object of used units and send it to backend or calculate Props (to decide).
-  function sendUnit(unit) {
-    console.log("send unit ", unit);
+  const[ unitsToSend, setUnitsToSend] = useState([
+    { type: "height", unit: "m" },
+    { type: "pressure", unit: "Pa" },
+    { type: "temperature", unit: "K" },
+    { type: "density", unit: "kg/m^3" },
+    { type: "sound_speed", unit: "m/s" },
+    { type: "kinematic_viscosity", unit: "m^2/s" },
+    { type: "dynamic_viscosity", unit: "Pa*s" },
+  ]);
 
+  function sendUnit2(type, unit){
+    console.log(type,unit)
+    axios
+    .put(`http://127.0.0.1:8000/change-unit/${ type }`, { type },{ unit })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  //Prepare list/object of used units and send it to backend or calculate Props (to decide).
+  function sendUnit(type, unit) {
+    setUnitsToSend(unitsToSend.map( (sentUnit) =>  sentUnit.type ===type ? {...sentUnit, unit: unit }:sentUnit));
+    
   }
 
   //Sends data to main.py and then fetches the stadard athmosphere props values from backend
   const calculateProps = async (height) => {
+    console.log(unitsToSend)
     axios
-      .post("http://127.0.0.1:8000/calc", { height })
+      .post("http://127.0.0.1:8000/calc", { height , unitsToSend })
       .then((res) => {
         console.log(res);
       })
@@ -110,15 +133,13 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-
-    console.log(height);
   };
 
   return (
     <div className="flex flex-col bg-center">
       <Header />
-      <InputHeightField onSubmit={calculateProps} sendUnit={sendUnit} />
-      <Outputs outputs={outputs} sendUnit={sendUnit} />
+      <InputHeightField onSubmit={calculateProps} sendUnit={sendUnit2} />
+      <Outputs outputs={outputs} sendUnit={sendUnit2} />
     </div>
   );
 }

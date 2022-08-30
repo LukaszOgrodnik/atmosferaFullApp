@@ -1,5 +1,9 @@
 import numpy
 
+def to_meters(height, unit="m"):
+    scale = {"m":1, "ft":1/3.2808, "km":1000}
+    return height*scale[unit]
+
 def temperature(height, unit = "K"):
     scale_multiplicator = {"K":1.0 , "C":1.0 , "Fa" :9.0/5.0, "R":9.0/5.0}
     scale_additor = {"K":0, "C":-273.15 , "Fa" :- 459.67 , "R":0}
@@ -33,4 +37,3 @@ def dynamic_viscosity(height, unit = "m^2/s"):
 def kinematic_viscosity(height,unit ="Pa*s"):
     scale = {"Pa*s":1, "P":10}
     return (1.40607 * 10 ** (-5) * 101325 / pressure(height) * (temperature(height) / 288.15) ** 1.754)*scale[unit]
-
