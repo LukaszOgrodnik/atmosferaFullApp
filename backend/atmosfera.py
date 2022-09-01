@@ -30,10 +30,10 @@ def sound_speed(height, unit = "m/s"):
     scale = {"m/s":1,"km/h":1/3.6,"mph":1/0.44704 ,"kts":1/0.514}
     return (340.3 * numpy.sqrt(temperature(height) / 288.15))*scale[unit]
 
-def dynamic_viscosity(height, unit = "m^2/s"):
+def kinematic_viscosity(height, unit = "m^2/s"):
     scale = {"m^2/s":1, "S":10000 ,"ft^2/s":1/0.09290304}
     return (1.458 * 10 ** (-6) * temperature(height) ** 1.5 / (temperature(height) + 100.4))*scale[unit]
 
-def kinematic_viscosity(height,unit ="Pa*s"):
+def dynamic_viscosity(height,unit ="Pa*s"):
     scale = {"Pa*s":1, "P":10}
     return (1.40607 * 10 ** (-5) * 101325 / pressure(height) * (temperature(height) / 288.15) ** 1.754)*scale[unit]
