@@ -1,17 +1,9 @@
 import { useState } from "react";
 import SelectUnit from "./SelectUnit";
 
-const heightUnits = [
-  { value: "m", label: "m" },
-  { value: "km", label: "km" },
-  { value: "ft", label: "ft" },
-];
-
-
-
-const InputHeightField = ({ onSubmit, sendUnit}) => {
+const InputHeightField = ({ onSubmit, units, unitType,  sendUnit}) => {
   const [inputHeight, setInputHeight] = useState();
-  
+  const placeholderValue= `Input ${unitType}`
 
   return (
     <div className="form-control">
@@ -19,11 +11,11 @@ const InputHeightField = ({ onSubmit, sendUnit}) => {
         <input
           type="text"
           value={inputHeight}
-          placeholder="Input height"
+          placeholder ={ placeholderValue }
           onChange={(e) => setInputHeight(e.target.value)}
           className="input input-bordered w-full max-w-xs"
         />
-        <SelectUnit unitType="height" options={heightUnits} sendUnit = {sendUnit} /> 
+        <SelectUnit unitType={unitType} options={units} sendUnit = {sendUnit} /> 
 
         <button className="btn" onClick={() => onSubmit(inputHeight)}>
           {" "}
