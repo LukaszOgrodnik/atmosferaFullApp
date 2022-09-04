@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from atmosfera import temperature, density, pressure, sound_speed, dynamic_viscosity, kinematic_viscosity, to_meters
+from atmosfera import temperature, density, pressure, sound_speed, dynamic_viscosity, kinematic_viscosity
 app = FastAPI()
 
 app.add_middleware(
@@ -33,14 +33,14 @@ class MyForm(BaseModel):
 #TO DO: height needs a key
 @app.post('/calc')
 async def calculate_data(object: MyForm):
-    height_sent= to_meters(object.height, object.unitState.height)
+    height_sent= object.height
     print(object)
     calc_units = object.unitState
     return {
-            'temperature': temperature(height_sent, calc_units.temperature),
-            'density': density(height_sent, calc_units.density),
-            'pressure': pressure(height_sent, calc_units.pressure),
-            'sound_speed': sound_speed(height_sent, calc_units.sound_speed),
-            'dynamic_viscosity': dynamic_viscosity(height_sent, calc_units.dynamic_viscosity),
-            'kinematic_viscosity': kinematic_viscosity(height_sent, calc_units.kinematic_viscosity)
+            'temperature': temperature(height_sent, calc_units.height, calc_units.temperature),
+            'density': density(height_sent, calc_units.height, calc_units.density),
+            'pressure': pressure(height_sent, calc_units.height, calc_units.pressure),
+            'sound_speed': sound_speed(height_sent, calc_units.height, calc_units.sound_speed),
+            'dynamic_viscosity': dynamic_viscosity(height_sent, calc_units.height, calc_units.dynamic_viscosity),
+            'kinematic_viscosity': kinematic_viscosity(height_sent, calc_units.height, calc_units.kinematic_viscosity)
         }

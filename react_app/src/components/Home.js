@@ -18,7 +18,7 @@ const Home = () => {
     {
       type: "temperature",
       label: "Temperature",
-      units: ["K", "C", "F", "R"],
+      units: ["K", "C", "Fa", "R"],
     },
     {
       type: "sound_speed",
