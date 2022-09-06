@@ -59,14 +59,6 @@ const Home = () => {
     dynamic_viscosity: 0,
   });
 
-  //   setOutputs((currentOutputs) => ({
-  //     ...currentOutputs,
-  //     [o.type]: {
-  //       unit: "Pa",
-  //       value: 0,
-  //     },
-  //   }));
-
   const heightUnits = ["m", "km", "ft"];
 
   //Prepare list/object of used units and send it to backend or calculate Props (to decide).

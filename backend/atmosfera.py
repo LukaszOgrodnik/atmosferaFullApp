@@ -45,6 +45,15 @@ def pressure_height(pressure,pressure_unit = 'Pa', height_unit = 'm'):
         height = 11000 - 6340* np.log(pressure/22632)
         return from_si(height,'height',height_unit)
 
+def density_height(density,density_unit = 'Pa', height_unit = 'm'):
+    density = to_si(density,'density', density_unit)
+    height = 44330*(1-(density/1.255)**(1/4.256))
+    if height < 11000.0:
+        return from_si(height,'height',height_unit)
+    else:
+        height = 11000 - 6340* np.log(pressure/0.3639)
+        return from_si(height,'height',height_unit)
+
 def temperature(height, height_unit = "m", temperature_unit = "K", ):
     height = to_si(height,'height',height_unit)
     if height < 11000.0:

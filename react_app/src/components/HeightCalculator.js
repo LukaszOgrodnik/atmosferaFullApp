@@ -22,7 +22,6 @@ const HeightCalculator = () => {
   }
 
   const calculateHeight = async (value, type) => {
-    //console.log(unitState);
     if (type === 'pressure') {
       const units = unitStatePressure
       console.log({type, value, units} )
@@ -33,6 +32,17 @@ const HeightCalculator = () => {
       });
       console.log(response.data);
       setValueStatePressure(response.data)
+    }
+    if (type === 'density') {
+      const units = unitStateDensity
+      console.log({type, value, units} )
+      let response = await axios.post("http://127.0.0.1:8000/height/", {
+        type,
+        value,
+        units
+      });
+      console.log(response.data);
+      setValueStateDensity(response.data)
     }
   };
 
@@ -106,7 +116,7 @@ const HeightCalculator = () => {
       <InputHeightField
         units={densityUnits}
         unitType={"density"}
-        //onSubmit={calculateProps}
+        onSubmit={calculateHeight}
         sendUnit={sendUnit}
       />
       <Outputs

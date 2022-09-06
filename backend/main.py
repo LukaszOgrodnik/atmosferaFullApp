@@ -2,7 +2,7 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from atmosfera import temperature, density, pressure, sound_speed, dynamic_viscosity, kinematic_viscosity, pressure_height
+from atmosfera import temperature, density, pressure, sound_speed, dynamic_viscosity, kinematic_viscosity, pressure_height , density_height
 app = FastAPI()
 
 app.add_middleware(
@@ -16,6 +16,7 @@ app.add_middleware(
 class Units(BaseModel):
     height: Optional [str]
     pressure_height: Optional[str]
+    density_height:Optional[str]
     pressure: Optional [str]
     density: Optional [str]
     temperature: Optional [str]
@@ -56,4 +57,8 @@ async def calculate_height(object: HeightCalculations):
     if object.type == 'pressure':
         return{
             'pressure_height': pressure_height(object.value, object.units.pressure, object.units.pressure_height)
+        }
+    if object.type == 'density':
+        return{
+            'density_height': density_height(object.value, object.units.density, object.units.density_height)
         }
