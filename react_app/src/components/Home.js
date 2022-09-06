@@ -67,16 +67,6 @@ const Home = () => {
   //     },
   //   }));
 
-  //   const [unitsToSend, setUnitsToSend] = useState([
-  //     { type: "height", unit: "m" },
-  //     { type: "pressure", unit: "Pa" },
-  //     { type: "temperature", unit: "K" },
-  //     { type: "density", unit: "kg/m^3" },
-  //     { type: "sound_speed", unit: "m/s" },
-  //     { type: "kinematic_viscosity", unit: "m^2/s" },
-  //     { type: "dynamic_viscosity", unit: "Pa*s" },
-  //   ]);
-
   const heightUnits = ["m", "km", "ft"];
 
   //Prepare list/object of used units and send it to backend or calculate Props (to decide).

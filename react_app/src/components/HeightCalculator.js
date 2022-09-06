@@ -7,11 +7,17 @@ const HeightCalculator = () => {
   function sendUnit(type, unit) {
     console.log(type + ":" + unit);
     if (type === "density" || type === "density_height") {
-      setUnitStateDensity((currentState) => ({ ...currentState, [type]: unit }));
+      setUnitStateDensity((currentState) => ({
+        ...currentState,
+        [type]: unit,
+      }));
     }
     if (type === "pressure" || type === "pressure_height") {
-      setUnitStatePressure((currentState) => ({ ...currentState, [type]: unit }));
-    } 
+      setUnitStatePressure((currentState) => ({
+        ...currentState,
+        [type]: unit,
+      }));
+    }
   }
 
   //for pressure height
@@ -48,10 +54,40 @@ const HeightCalculator = () => {
     density_height: 0,
   });
 
+  //handling radio button changes
+  const [radioButtons, setRadioButtons] = useState({
+    density: true,
+    temperature_pressure: false
+  }
+  )
   return (
     <div>
       <p>In this place you can calculate height in two ways:</p>
       <h3>Density height:</h3>
+
+      <div className="flex flex-row">
+        <div className="label">
+        <input
+            type="radio"
+            name="radio-6"
+            className="radio checked:bg-red-500"
+            checked = {radioButtons.density}
+            //onChange = {setRadioButtons(() => ({density:true,temperature_pressure:false}))}
+          />
+          <span className="label-text">Density</span>
+        </div>
+        <div className="label">
+          <input
+            type="radio"
+            name="radio-6"
+            className="radio checked:bg-blue-500"
+            checked = {radioButtons.temperature_pressure}
+            //onChange = {setRadioButtons(() => ({density:false,temperature_pressure:true}))}
+          />
+          <span className="label-text">Temperature and pressure </span>
+        </div>
+      </div>
+
       <InputHeightField
         units={densityUnits}
         unitType={"density"}
@@ -60,7 +96,7 @@ const HeightCalculator = () => {
       />
       <Outputs
         outputs={densityHeight}
-        outputValues={valueStateDensity} 
+        outputValues={valueStateDensity}
         sendUnit={sendUnit}
       />
       <div className="divider">OR</div>
@@ -73,7 +109,7 @@ const HeightCalculator = () => {
       />
       <Outputs
         outputs={pressureHeight}
-        outputValues={valueStatePressure} 
+        outputValues={valueStatePressure}
         sendUnit={sendUnit}
       />
     </div>
