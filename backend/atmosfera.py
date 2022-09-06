@@ -36,6 +36,15 @@ def from_si(value, type, unit):
     multiplication_factor_value = type_chosen[unit]
     return value * multiplication_factor_value+addition_factor_value
 
+def pressure_height(pressure,pressure_unit = 'Pa', height_unit = 'm'):
+    pressure = to_si(pressure,'pressure', pressure_unit)
+    height = 44330*(1-(pressure/101325)**(1/5.256))
+    if height < 11000.0:
+        return from_si(height,'height',height_unit)
+    else:
+        height = 11000 - 6340* np.log(pressure/22632)
+        return from_si(height,'height',height_unit)
+
 def temperature(height, height_unit = "m", temperature_unit = "K", ):
     height = to_si(height,'height',height_unit)
     if height < 11000.0:
@@ -52,7 +61,7 @@ def density(height,height_unit = "m", density_unit= "kg/m^3",):
         density = 1.255 * (1 - height/ 44330) ** 4.256
         return from_si(density,'density', density_unit)
     else:
-        return (0.3639 * np.exp((height- 11000) / 6340))*scale[unit]
+        return (0.3639 * np.exp(-(height- 11000) / 6340))*scale[unit]
 
 def pressure(height, height_unit = "m", pressure_unit = "Pa"):
     height = to_si(height,'height',height_unit)
@@ -60,7 +69,7 @@ def pressure(height, height_unit = "m", pressure_unit = "Pa"):
         pressure = 101325 * (1 - height / 44300) ** 5.256 
         return from_si(pressure,"pressure", pressure_unit)
     else:
-        pressure = 22632 * np.exp((height- 11000) / 6340)
+        pressure = 22632 * np.exp(-(height- 11000) / 6340)
         return from_si(pressure,"pressure", pressure_unit)
 
 def sound_speed(height, height_unit = "m", sound_speed_unit = "m/s"):

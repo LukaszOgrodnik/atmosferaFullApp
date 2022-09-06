@@ -17,7 +17,7 @@ const InputHeightField = ({ onSubmit, units, unitType,  sendUnit}) => {
         />
         <SelectUnit unitType={unitType} options={units} sendUnit = {sendUnit} /> 
 
-        <button className="btn" onClick={() => onSubmit(inputHeight)}>
+        <button className="btn" onClick={() => onSubmit(inputHeight, unitType)}>
           {" "}
           Submit
         </button>
