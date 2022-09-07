@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import RadioButtons from "./RadioButtons";
 import InputHeightField from "./InputHeightField";
 import Outputs from "./Outputs";
+import DoubleInput from "./DoubleInput";
 
 const HeightCalculator = () => {
   //Prepare list/object of used units and send it to backend or calculate Props (to decide).
@@ -22,27 +24,27 @@ const HeightCalculator = () => {
   }
 
   const calculateHeight = async (value, type) => {
-    if (type === 'pressure') {
-      const units = unitStatePressure
-      console.log({type, value, units} )
+    if (type === "pressure") {
+      const units = unitStatePressure;
+      console.log({ type, value, units });
       let response = await axios.post("http://127.0.0.1:8000/height/", {
         type,
         value,
-        units
+        units,
       });
       console.log(response.data);
-      setValueStatePressure(response.data)
+      setValueStatePressure(response.data);
     }
-    if (type === 'density') {
-      const units = unitStateDensity
-      console.log({type, value, units} )
+    if (type === "density") {
+      const units = unitStateDensity;
+      console.log({ type, value, units });
       let response = await axios.post("http://127.0.0.1:8000/height/", {
         type,
         value,
-        units
+        units,
       });
       console.log(response.data);
-      setValueStateDensity(response.data)
+      setValueStateDensity(response.data);
     }
   };
 
@@ -82,43 +84,37 @@ const HeightCalculator = () => {
 
   //handling radio button changes
   const [radioButtons, setRadioButtons] = useState({
-    density: true,
-    temperature_pressure: false,
+    radio1: true,
+    radio2: false,
   });
+
   return (
     <div>
       <p>In this place you can calculate height in two ways:</p>
       <h3>Density height:</h3>
 
-      <div className="flex flex-row">
-        <div className="label">
-          <input
-            type="radio"
-            name="radio-6"
-            className="radio checked:bg-red-500"
-            checked={radioButtons.density}
-            //onChange = {setRadioButtons(() => ({density:true,temperature_pressure:false}))}
-          />
-          <span className="label-text">Density</span>
-        </div>
-        <div className="label">
-          <input
-            type="radio"
-            name="radio-6"
-            className="radio checked:bg-blue-500"
-            checked={radioButtons.temperature_pressure}
-            //onChange = {setRadioButtons(() => ({density:false,temperature_pressure:true}))}
-          />
-          <span className="label-text">Temperature and pressure </span>
-        </div>
-      </div>
-
-      <InputHeightField
-        units={densityUnits}
-        unitType={"density"}
-        onSubmit={calculateHeight}
-        sendUnit={sendUnit}
+      <RadioButtons
+        radioButtons={radioButtons}
+        setRadioButtons={setRadioButtons}
       />
+
+      {radioButtons.radio1 && (
+        <InputHeightField
+          units={densityUnits}
+          unitType={"density"}
+          onSubmit={calculateHeight}
+          sendUnit={sendUnit}
+        />
+      )}
+      {radioButtons.radio2 && (
+        <DoubleInput
+          units={densityUnits}
+          unitType={"density"}
+          onSubmit={calculateHeight}
+          sendUnit={sendUnit}
+        />
+      )}
+
       <Outputs
         outputs={densityHeight}
         outputValues={valueStateDensity}
