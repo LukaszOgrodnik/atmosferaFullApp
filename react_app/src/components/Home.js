@@ -37,7 +37,7 @@ const Home = () => {
     },
   ];
 
-  //   use useState
+  //Units that are send to backend
   const [unitState, setUnitState] = useState({
     height: "m",
     pressure: "Pa",
@@ -48,7 +48,7 @@ const Home = () => {
     dynamic_viscosity: "Pa*s",
   });
 
-  //   use useState
+  //Values obtained from backend
   const [valueState, setValueState] = useState({
     height: 0,
     pressure: 0,
@@ -82,7 +82,7 @@ const Home = () => {
     setValueState(response.data);
   };
   return (
-    <div>
+    <div >
       <label className="label">
         <span className="label-text font-size:4rem">
           Enter the height for which you want to calculate athomsphere
@@ -99,6 +99,7 @@ const Home = () => {
         outputs={outputArray}
         outputValues={valueState}
         sendUnit={sendUnit}
+        overwriteOutputUnit
       />
     </div>
   );

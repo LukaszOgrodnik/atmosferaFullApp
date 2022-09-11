@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import RadioButtons from "./RadioButtons";
-import InputHeightField from "./InputHeightField";
+
 import Outputs from "./Outputs";
 import DoubleInput from "./DoubleInput";
 
@@ -9,130 +8,109 @@ const HeightCalculator = () => {
   //Prepare list/object of used units and send it to backend or calculate Props (to decide).
   function sendUnit(type, unit) {
     console.log(type + ":" + unit);
-    if (type === "density" || type === "density_height") {
-      setUnitStateDensity((currentState) => ({
-        ...currentState,
-        [type]: unit,
-      }));
-    }
-    if (type === "pressure" || type === "pressure_height") {
-      setUnitStatePressure((currentState) => ({
-        ...currentState,
-        [type]: unit,
-      }));
-    }
+    setUnitState((currentState) => ({
+      ...currentState,
+      [type]: unit,
+    }));
   }
 
-  const calculateHeight = async (value, type) => {
-    if (type === "pressure") {
-      const units = unitStatePressure;
-      console.log({ type, value, units });
-      let response = await axios.post("http://127.0.0.1:8000/height/", {
-        type,
-        value,
-        units,
-      });
-      console.log(response.data);
-      setValueStatePressure(response.data);
-    }
-    if (type === "density") {
-      const units = unitStateDensity;
-      console.log({ type, value, units });
-      let response = await axios.post("http://127.0.0.1:8000/height/", {
-        type,
-        value,
-        units,
-      });
-      console.log(response.data);
-      setValueStateDensity(response.data);
-    }
+  const calculateHeight = async (pressure, temperature) => {
+    const units = unitState;
+    console.log({ pressure, temperature, units });
+    let response = await axios.post("http://127.0.0.1:8000/height/", {
+      pressure,
+      temperature,
+      units,
+    });
+    console.log(response.data);
+    setValueState(response.data);
   };
 
-  //for pressure height
-  const pressureUnits = ["Pa", "hPa", "MPa", "atm", "bar", "psi"];
-  const pressureHeight = [
+  // Outputs
+  const outputArray = [
     {
       type: "pressure_height",
       label: "Pressure height",
-      units: ["m", "km", "ft"],
+      units: ["m", "km", "ft"]
     },
+    {
+      type: "temperature",
+      label: "Temperature",
+      units: ["K", "C", "Fa", "R"]
+    }
   ];
-  const [unitStatePressure, setUnitStatePressure] = useState({
-    pressure_height: "m",
-    pressure: "Pa",
-  });
-  const [valueStatePressure, setValueStatePressure] = useState({
-    pressure_height: 0,
-  });
-
-  //for density height
-  const densityUnits = ["kg/m^3", "g/cm^3", "sl/ft^3", "lb/ft^3"];
   const densityHeight = [
     {
       type: "density_height",
       label: "Density height",
-      units: ["m", "km", "ft"],
-    },
+      units: ["m", "km", "ft"]
+    }
   ];
-  const [unitStateDensity, setUnitStateDensity] = useState({
+
+  //units that are sent to backend
+  const [unitState, setUnitState] = useState({
+    pressure_height: "m",
     density_height: "m",
-    density: "kg/m^3",
-  });
-  const [valueStateDensity, setValueStateDensity] = useState({
-    density_height: 0,
+    pressure: "Pa",
+    temperature: "K"
   });
 
-  //handling radio button changes
-  const [radioButtons, setRadioButtons] = useState({
-    radio1: true,
-    radio2: false,
+  //values obtained from backend
+  const [valueState, setValueState] = useState({
+    pressure_height: 0,
+    temperature: 0,
+    density_height: 0
   });
+
+  const inputUnits = {
+    temperature: ["K", "C", "Fa", "R"],
+    pressure: ["Pa", "hPa", "MPa", "atm", "bar", "psi"]
+  };
+
+  const [overwriteTemperature, setOverwriteTemperature] = useState(false);
 
   return (
-    <div>
-      <p>In this place you can calculate height in two ways:</p>
-      <h3>Density height:</h3>
+    <div className="m-2">
+      <label className="label">
+        <span className="label-text font-size:4rem">
+          In this place you can calculate height in two common ways using
+          ISO-standard atmosphere. The two values to calculate it are pressure
+          and temperature. The first one uses only pressure and it is called
+          pressure height. In the second one the temperature can be overwritten
+          for calculation. This will give us so called density height. For the
+          educational puposes the temperature from ISO standard atmospere for
+          the pressure height calculated will be shown. This enables the user to
+          comper how temperature change will differ height value.{" "}
+        </span>{" "}
+      </label>
 
-      <RadioButtons
-        radioButtons={radioButtons}
-        setRadioButtons={setRadioButtons}
-      />
+      <div className="flex flex-row">
+        <div className="flex flex-col">
+          <DoubleInput
+            units={inputUnits}
+            unitType={{ pressure: "pressure", temperature: "temperature" }}
+            onSubmit={calculateHeight}
+            sendUnit={sendUnit}
+            overwriteTemperature={overwriteTemperature}
+            setOverwriteTemperature={setOverwriteTemperature}
+          />
+        </div>
+        <div className="flex flex-col">
+          <Outputs
+            outputs={outputArray}
+            outputValues={valueState}
+            sendUnit={sendUnit}
+            overwriteOutputUnit ={{use:overwriteTemperature, type:"temperature", value:unitState.temperature}}
+          />
 
-      {radioButtons.radio1 && (
-        <InputHeightField
-          units={densityUnits}
-          unitType={"density"}
-          onSubmit={calculateHeight}
-          sendUnit={sendUnit}
-        />
-      )}
-      {radioButtons.radio2 && (
-        <DoubleInput
-          units={densityUnits}
-          unitType={"density"}
-          onSubmit={calculateHeight}
-          sendUnit={sendUnit}
-        />
-      )}
-
-      <Outputs
-        outputs={densityHeight}
-        outputValues={valueStateDensity}
-        sendUnit={sendUnit}
-      />
-      <div className="divider">OR</div>
-      <h3>Pressure height:</h3>
-      <InputHeightField
-        units={pressureUnits}
-        unitType={"pressure"}
-        onSubmit={calculateHeight}
-        sendUnit={sendUnit}
-      />
-      <Outputs
-        outputs={pressureHeight}
-        outputValues={valueStatePressure}
-        sendUnit={sendUnit}
-      />
+          {overwriteTemperature && <Outputs
+            outputs={densityHeight}
+            outputValues={valueState}
+            sendUnit={sendUnit}
+            overwriteOutputUnit
+          />}
+        </div>
+      </div>
     </div>
   );
 };
